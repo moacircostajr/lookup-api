@@ -1,94 +1,58 @@
-Configurando uma API em *Python* com *Django* e *Django Rest*
----
+# lookup-api
+Projeto desenvolvido em Python com o framework Django Rest Framework, consistindo numa api que faz o gerenciamento da plataforma de vendas online Lookup.
 
-As configurações a seguir ultilizarão *Django* e *Django Rest*. O *Django* é um framework *Python* feito para facilitar a criação de aplicações web. O *Django Rest* é um framework que se pluga ao *Django* para criar APIS Rest com maior facilidade. Apesar dos nomes parecidos, os projetos são mantidos por equipes completemente distintas, e portanto, não devem ser considerados "a mesma coisa". A seguir deixarei os links das paginas oficiais de ambos os projetos:
+### Introdução
 
-* [Página oficial do projeto *Django*](https://www.djangoproject.com/)
-* [Página oficial do projeto *Django Rest*](https://www.django-rest-framework.org/)
+Estas instruções lhe permitirão obter uma cópia do projeto e executá-lo na sua máquina local para desenvolvimento e testes. Veja as notas de compilação para saber como compilar o projeto.
 
-Preparando o Ambiente de Desenvolvimento - *Python 3.6* no *Ubuntu*
----
+## Pré-requisitos
 
-1. Crie um diretorio para o projeto:
-    ` mkdir [nome_do_diretorio] `.
+* python3.8
+* python3.8-venv
 
-2. Entre no diretorio criado:
-    ` cd [nome_do_diretorio] `.
+## Instalação
 
-3. Instale o suporte a criacao e gerenciamento de ambiente virtual (Venv - isola as libs do projeto das do sistema operacional para evitar conflitos) no *Python 3.6*:
-    `sudo apt-get install python3.6-venv`.
+Após o download deste projeto, dentro de sua pasta principal deve ser executado o comando `python3 -m venv myvenv`, para criar o ambiente de desenvolvimento.
 
-4. Crie uma nova Venv (ambiente virtual):
-	`python3 -m venv [nome_da_venv]`.
+Em seguida o ambiente de desenvolvimento deve ser acessado através do comando `. myvenv/bin/activate`
 
-5. Ative a Venv criada:
-	`source [diretorio_da_venv_criada]/bin/activate`.
+Para sair do ambiente de desenvolvimento execute o comando `deactivate`
 
-6. Com a Venv ativada, agora é hora de instalar o *Django* por meio do pip3 (gerenciador de pacotes do *Python*):
-	`pip3 install django`.
 
-7. Com o *Django* instalado, agora é a vez do *Django Rest*:
-	`pip3 install djangorestframework`.
+As dependências do projeto devem ser instaladas através dos seguintes comandos, nessa ordem:
+* `pip install django`
+* `pip install djangorestframework`
+* `pip install django-cors-headers`
 
-8. Voce tambem pode usar para instalart tudo de uma vez um requirements.txt:
-    `pip3 install -r requirements.txt`    
+Após a instalação das dependências, basta executar os seguintes passos de configuração do projeto:
 
-9. Com o *Django* instalado, podemos inicializar um projeto *Django* dentro do diretorio raiz do projeto. O ponto (`.`) no final do comando é facultativo, mas ele tem a função de indicar ao *Django* que crie as estruturas do projeto na pasta corrente:
-	`django-admin startproject [nome_do_projeto] [.]` .
+Executar os scripts de banco de dados predefinidos no banco padrão (sqlite)
 
-10. Agora é necessário registrar o *Django Rest* no projeto inicializado anteriormente, para isso você precisa abrir o arquivo `settings.py` e adicionar `'rest_framework'` na lista `INSTALLED_APPS`.
+`python manage.py migrate`
 
-IDE - PyCharm
----
+Deve ser criado um superusuário (password = 12345)
 
-- Voce pode Baixar o [PyCharm](https://www.jetbrains.com/pycharm/) ou simplesmente instalar o pluguin do PyCharm no [Intelij](https://www.jetbrains.com/idea/)
+`python manage.py createsuperuser --email admin@example.com --username admin`
 
-- Importe projeto na IDE
+## Servidor de desenvolvimento
 
-- Configure o SDK. O SDK do projeto deve **ultilizar o interpretador da Venv**, caso contrário a IDE não reconhecerá as dependências instaladas anteriormente: `[diretorio_da_venv]/bin/python`
+Execute `python manage.py runserver 0.0.0.0:8000`, no terminal de comando, para iniciar o servidor de desenvolvimento. Acesse o endereço web `http://localhost:8000/`.
 
-Comandos Importantes Para o Inicio do Projeto
---
+Para parar a execução do servidor de desenvolvimento, pressione `Ctrl + C`, no terminal de comando.
 
-**Atenção: Os comandos a seguir dependem dos frameworks instalados e da venv ativada. Eles serão ultilizados apenas 1 vez - no início do projeto.**
+## Ajuda
 
-* *Comando createsuperuser (ultilizado para criar o superusuario da aplicacao)*
-    `python3 manage.py createsuperuser `.
+Para obter mais informações sobre o framework DjangoRestFramework, acesse [DjangoRestFrameWork Docs](https://www.django-rest-framework.org/).
 
-Comandos Importantes Para Desenvolvimento
----
+## Licença
 
-* Comando which python (importante para verificar se a Venv está ativada):
-    `which python`.
+Este projeto está licenciado sob os termos da [GNU General Public License v3.0](http://licencas.softwarelivre.org/gpl-3.0.pt-br.html).
 
-* Ativar Venv:
-    `source [diretorio_da_venv_criada]/bin/activate` ou 
-    `. [diretorio_da_venv_criada]/bin/activate`.	
+## Autor
 
-* Desativar Venv:
-    `deactivate`.
+* **Moacir Costa** - *Desenvolvedor inicial*
 
-* Comando migrate (ultilizado para criar o bancos na aplicacao. Sempre que uma nova app for criada esse comando devera ser disparado):*
-    `python3 manage.py migrate`.
+## Agradecimentos
 
-* Comando makemigrations (ultilizado para atualizar o banco do projeto):
-    `python3 manage.py makemigrations`.
-    
-* Comando runserver (ultilizado para iniciar o servidor):
-    `python3 manage.py runserver`.
-    
-* Comando startapp (ultilizado para criar apps *Django*):
-    `python3 manage.py startapp`.
-
-Dicas de Desenvolvimento
----
-
-* Quando voce criar uma nova app voce deve registra-la colocando seu nome na lista `INSTALLED_APPS`, arquivo `settings.py`, caso contrario o *Django* nao conseguira encontrar sua app e as migracoes nao poderao ser realizadas.
-
-* Sempre que voce criar uma nova app voce deve ter o cuidado de adicionar a pasta migrations no `.gitignore`.
-
-* Sempre que um novo model for criado, lembre-se de registrá-lo no arquivo admin.py da app Exemplo: `admin.site.register(NomeDaClasseDeModelo)`
-
-Deploy
----
-python3 manage.py runserver 0.0.0.0:8000
+* A Jesus Cristo, que me deu fé, coragem, inteligência e determinação para chegar até aqui
+* Ao meu irmão, Claudio Costa, que me ensinou a desenvolver sistemas web nos seus momentos de folga
